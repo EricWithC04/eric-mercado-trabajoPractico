@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database.js";
 
-const Coment = sequelize.define("coment",
+const Comment = sequelize.define("comment",
     {
         id: {
             type: DataTypes.INTEGER,
@@ -27,4 +27,4 @@ const Coment = sequelize.define("coment",
     timestamps: false,
 });
 
-export default Coment;
+export default Comment;
