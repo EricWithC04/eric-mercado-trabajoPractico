@@ -5,6 +5,9 @@ dotenv.config()
 
 const app = Express()
 
+app.use(Express.json())
+app.use(Express.urlencoded({extended: true}))
+
 app.use("/api", router)
 
 app.get("*", (req, res) => {

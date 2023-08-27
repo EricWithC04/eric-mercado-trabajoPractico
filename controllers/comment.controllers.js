@@ -24,7 +24,8 @@ export const createComment = async (req, res) => {
         const today = new Date()
         const newComment = await Comment.create({
             content,
-            createDate: today.toISOString().split("T")[0]
+            createDate: today.toISOString().split("T")[0],
+            updateDate: "0000-00-00"
         })
 
         if (!newComment) {

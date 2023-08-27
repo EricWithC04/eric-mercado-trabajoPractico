@@ -2,7 +2,11 @@ import Post from "../models/Post.js";
 
 export const getAllPosts = async (req, res) => {
     try {
-        const allPosts = await Post.findAll()
+        const allPosts = await Post.findAll({
+            where: {
+                state: true
+            }
+        })
     
         if (!allPosts || allPosts.length === 0) {
             throw ({
@@ -18,10 +22,15 @@ export const getAllPosts = async (req, res) => {
     }
 }
 
-export const getOnePosts = async (req, res) => {
+export const getOnePost = async (req, res) => {
     const { id } = req.params
     try {
-        const browsedPost = await Post.findByPk(id)
+        const browsedPost = await Post.findOne({
+            where: {
+                id,
+                state: true
+            }
+        })
     
         if (!browsedPost) {
             throw ({
@@ -98,10 +107,15 @@ export const updatePost = async (req, res) => {
 }
 
 export const deletePost = async (req, res) => {
-    const { id } = req.body
+    const { id } = req.params
     try {
-        const post = await Post.findByPk(id)
-        const deletedPost = await post.update({ state: false })
+        const deletedPost = await Post.update({
+            state: false 
+        }, {
+            where: {
+                id
+            }
+        })
 
         if (!deletedPost) {
             throw ({
