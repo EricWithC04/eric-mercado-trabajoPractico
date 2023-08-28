@@ -1,8 +1,17 @@
+import Post from "../models/Post.js";
 import User from "../models/Usuario.js";
 
 export const getAllUsers = async (req, res) => {
     try {
-        const allUsers = await User.findAll()
+        const allUsers = await User.findAll({
+            include: [
+                {
+                    model: Post, 
+                    as: "posts",
+                    attributes: ["id", "title", "content"]
+                }
+            ]
+        })
     
         if (!allUsers || allUsers.length === 0) {
             throw ({

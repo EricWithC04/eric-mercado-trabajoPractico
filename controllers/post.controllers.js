@@ -1,11 +1,20 @@
 import Post from "../models/Post.js";
+import Usuario from "../models/Usuario.js";
+import Comment from "../models/Comentario.js";
 
 export const getAllPosts = async (req, res) => {
     try {
         const allPosts = await Post.findAll({
             where: {
                 state: true
-            }
+            },
+            include: [
+                {
+                    model: Comment, 
+                    as: "comments",
+                    attributes: ["id", "content"]
+                }
+            ]
         })
     
         if (!allPosts || allPosts.length === 0) {
@@ -47,7 +56,7 @@ export const getOnePost = async (req, res) => {
 }
 
 export const createPost = async (req, res) => {
-    const { title, content } = req.body
+    const { title, content, idUser } = req.body
     try {
         const today = new Date()
         const newPost = await Post.create({
@@ -63,6 +72,9 @@ export const createPost = async (req, res) => {
                 message: 'No se ha podido crear el Post'
             })
         }
+
+        const user = await Usuario.findByPk(idUser)
+        user.addPost(newPost)
 
         res.status(201).json({
             message: 'Se ha creado el Post correctamente',

@@ -1,4 +1,5 @@
 import Comment from "../models/Comentario.js";
+import Post from "../models/Post.js";
 
 export const getAllComments = async (req, res) => {
     try {
@@ -19,13 +20,12 @@ export const getAllComments = async (req, res) => {
 }
 
 export const createComment = async (req, res) => {
-    const { content } = req.body
+    const { content, idPost } = req.body
     try {
         const today = new Date()
         const newComment = await Comment.create({
             content,
-            createDate: today.toISOString().split("T")[0],
-            updateDate: "0000-00-00"
+            createDate: today.toISOString().split("T")[0]
         })
 
         if (!newComment) {
@@ -34,6 +34,9 @@ export const createComment = async (req, res) => {
                 message: 'No se ha podido crear el Comentario'
             })
         }
+
+        const post = await Post.findByPk(idPost)
+        post.addComment(newComment)
 
         res.status(201).json({
             message: 'Se ha creado el Comentario correctamente',

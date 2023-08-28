@@ -17,10 +17,6 @@ const Comment = sequelize.define("comment",
         createDate: {
             type: DataTypes.DATE,
             allowNull: false,
-        },
-        updateDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
         }
     },
 {
