@@ -1,3 +1,4 @@
+import { hashString } from "../helpers/hash.js";
 import Post from "../models/Post.js";
 import User from "../models/Usuario.js";
 
@@ -29,6 +30,7 @@ export const getAllUsers = async (req, res) => {
 
 export const createUser = async (req, res) => {
     const { name, surname, username, birthdate, email, password } = req.body
+    const hashUserPassword = await hashString(password)
     try {
         const newUser = await User.create({
             name,
@@ -36,7 +38,7 @@ export const createUser = async (req, res) => {
             username,
             birthdate,
             email,
-            password
+            password: hashUserPassword
         })
 
         if (!newUser) {
