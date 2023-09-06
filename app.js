@@ -6,11 +6,14 @@ import commentRouter from "./routes/comment.routes.js";
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
+import logStream from "./middleware/logs.js";
 dotenv.config()
 
 const app = Express();
 
-app.use(morgan("dev"))
+app.use(morgan("combined", {
+    stream: logStream
+}))
 app.use(cors())
 app.use(helmet())
 app.use(Express.json())
